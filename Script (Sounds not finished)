@@ -1,208 +1,73 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local CoreGui = game:GetService("CoreGui")
-local SoundService = game:GetService("SoundService")
 
 -- Create Screen UI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = CoreGui
-ScreenGui.Name = "HenryStickminUI"
+ScreenGui.Name = "KeySystemUI"
 
 -- Main Frame
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0.3, 0, 0.5, 0)
-MainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
+MainFrame.Size = UDim2.new(0.3, 0, 0.25, 0)
+MainFrame.Position = UDim2.new(0.35, 0, 0.35, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MainFrame.BorderSizePixel = 2
 MainFrame.Parent = ScreenGui
 
 -- Title
 local Title = Instance.new("TextLabel")
 Title.Parent = MainFrame
-Title.Size = UDim2.new(1, 0, 0.1, 0)
+Title.Size = UDim2.new(1, 0, 0.2, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Henry Stickmin - Delta"
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 20
+Title.Text = "🔐 Key System"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
 
--- Stickman Character
-local Stickman = Instance.new("TextLabel")
-Stickman.Parent = MainFrame
-Stickman.Size = UDim2.new(0.2, 0, 0.2, 0)
-Stickman.Position = UDim2.new(0.4, 0, 0.3, 0)
-Stickman.BackgroundTransparency = 1
-Stickman.Text = "🕴️"
-Stickman.TextSize = 40
-Stickman.TextColor3 = Color3.fromRGB(255, 255, 255)
+-- Get Key Button
+local GetKeyButton = Instance.new("TextButton")
+GetKeyButton.Parent = MainFrame
+GetKeyButton.Size = UDim2.new(0.9, 0, 0.2, 0)
+GetKeyButton.Position = UDim2.new(0.05, 0, 0.3, 0)
+GetKeyButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+GetKeyButton.Text = "📋 Get Key"
+GetKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKeyButton.TextScaled = true
 
--- Sounds
-local ClickSound = Instance.new("Sound", SoundService)
-ClickSound.SoundId = "rbxassetid://CLICK_SOUND_ID" -- Replace with a click sound
-
-local SuccessSound = Instance.new("Sound", SoundService)
-SuccessSound.SoundId = "rbxassetid://SUCCESS_SOUND_ID" -- Replace with a success sound
-
-local FailSound = Instance.new("Sound", SoundService)
-FailSound.SoundId = "rbxassetid://FAIL_SOUND_ID" -- Replace with a fail sound
-
--- Choices Frame
-local ChoicesFrame = Instance.new("Frame")
-ChoicesFrame.Parent = MainFrame
-ChoicesFrame.Size = UDim2.new(1, 0, 0.4, 0)
-ChoicesFrame.Position = UDim2.new(0, 0, 0.6, 0)
-ChoicesFrame.BackgroundTransparency = 1
-
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Parent = ChoicesFrame
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 5)
-
--- Function to Remove Old Choices
-local function clearChoices()
-    for _, child in pairs(ChoicesFrame:GetChildren()) do
-        if child:IsA("TextButton") then
-            child:Destroy()
-        end
-    end
-end
-
--- Function to Create a Choice Button
-local function createChoiceButton(choiceName, callback)
-    local Button = Instance.new("TextButton")
-    Button.Parent = ChoicesFrame
-    Button.Size = UDim2.new(1, 0, 0.2, 0)
-    Button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-    Button.Text = choiceName
-    Button.Font = Enum.Font.GothamBold
-    Button.TextSize = 18
-    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    Button.MouseButton1Click:Connect(function()
-        ClickSound:Play()
-        callback()
-    end)
-end
-
--- Function to Show Escape the Prison Scene
-local function showPrisonEscape()
-    Stickman.Text = "🚔➡️🚓" -- Stickman gets arrested
-    task.wait(1)
-
-    Title.Text = "Escape the Prison!"
-    clearChoices() -- Remove old choices
-
-    createChoiceButton("File 🪚", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "✅ ESCAPED!"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "🚔 CAUGHT ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Restart Prison Escape
-        end
-    end)
-
-    createChoiceButton("Grenade 💥", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "✅ ESCAPED!"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "💥 SELF-KO ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Restart Prison Escape
-        end
-    end)
-
-    createChoiceButton("Ventilation Duct 🔧", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "✅ ESCAPED!"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "🔄 RETURNED ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Restart Prison Escape
-        end
-    end)
-end
-
--- Function to Show Bank Scene
-local function showBankScene()
-    Stickman.Text = "🕴️➡️🏦" -- Stickman moves to Bank
-    task.wait(1)
-
-    Title.Text = "Break into the Bank!"
-    clearChoices() -- Remove old choices
-
-    createChoiceButton("Explosives 💣", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "💥💰 SUCCESS ✅"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "💥🚔 FAIL ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Reset to Escape the Prison
-        end
-    end)
-
-    createChoiceButton("Digging 🛠️", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "🕳️💰 SUCCESS ✅"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "🕳️🚔 FAIL ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Reset to Escape the Prison
-        end
-    end)
-
-    createChoiceButton("Sneaky Entry 🕵️‍♂️", function()
-        if math.random(1, 2) == 1 then
-            Stickman.Text = "🤫💰 SUCCESS ✅"
-            SuccessSound:Play()
-        else
-            Stickman.Text = "🤫🚔 FAIL ❌"
-            FailSound:Play()
-            task.wait(1)
-            showPrisonEscape() -- Reset to Escape the Prison
-        end
-    end)
-end
-
--- Adding First Choices
-createChoiceButton("Teleporter 📡", function()
-    if math.random(1, 2) == 1 then
-        Stickman.Text = "✅ SUCCESS!"
-        SuccessSound:Play()
-        showBankScene()
-    else
-        Stickman.Text = "❌ FAIL!"
-        FailSound:Play()
-    end
+GetKeyButton.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/jUjqmuJDPu") -- Copies Discord invite
+    GetKeyButton.Text = "Copied!"
+    wait(1)
+    GetKeyButton.Text = "📋 Get Key"
 end)
 
-createChoiceButton("Telephone 📞", function()
-    if math.random(1, 2) == 1 then
-        Stickman.Text = "✅ SUCCESS!"
-        SuccessSound:Play()
-        showBankScene()
-    else
-        Stickman.Text = "❌ FAIL!"
-        FailSound:Play()
-    end
-end)
+-- Key Input Box
+local KeyBox = Instance.new("TextBox")
+KeyBox.Parent = MainFrame
+KeyBox.Size = UDim2.new(0.9, 0, 0.2, 0)
+KeyBox.Position = UDim2.new(0.05, 0, 0.55, 0)
+KeyBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+KeyBox.PlaceholderText = "🔑 Enter Key"
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBox.TextScaled = true
 
-createChoiceButton("Rocket Boots 🚀", function()
-    if math.random(1, 2) == 1 then
-        Stickman.Text = "✅ SUCCESS!"
-        SuccessSound:Play()
-        showBankScene()
+-- Submit Button
+local SubmitButton = Instance.new("TextButton")
+SubmitButton.Parent = MainFrame
+SubmitButton.Size = UDim2.new(0.9, 0, 0.2, 0)
+SubmitButton.Position = UDim2.new(0.05, 0, 0.8, 0)
+SubmitButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+SubmitButton.Text = "✅ Submit"
+SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitButton.TextScaled = true
+
+SubmitButton.MouseButton1Click:Connect(function()
+    if KeyBox.Text == "FREE_QIWJHD72653" then
+        MainFrame:Destroy() -- Remove Key UI
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RedDominus/Henry-Stickman---Delta/main/Script%20(Sounds%20not%20finished)"))()
     else
-        Stickman.Text = "❌ FAIL!"
-        FailSound:Play()
+        KeyBox.Text = "❌ Incorrect Key!"
+        wait(1)
+        KeyBox.Text = ""
     end
 end)
