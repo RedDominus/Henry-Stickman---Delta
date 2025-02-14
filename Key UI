@@ -64,7 +64,7 @@ SubmitButton.TextScaled = true
 SubmitButton.MouseButton1Click:Connect(function()
     if KeyBox.Text == "FREE_QIWJHD72653" then
         MainFrame:Destroy() -- Remove Key UI
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/RedDominus/Henry-Stickman---Delta/main/Script%20(Sounds%20not%20finished)"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/RedDominus/Henry-Stickman---Delta/main/Script%20(Sounds%20not%20Finished%20Yet).lua"))()
     else
         KeyBox.Text = "❌ Incorrect Key!"
         wait(1)
